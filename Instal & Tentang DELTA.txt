@@ -1,0 +1,107 @@
+Instalasi
+
+nstal python3 , GDAL , dan pengikatan python GDAL . Untuk Ubuntu Linux, Anda dapat menjalankan scripts/setup.shdari repositori DELTA untuk menginstal dependensi ini.
+
+Instal Tensorflow dengan pip mengikuti petunjuknya . Untuk dukungan GPU di DELTA (sangat disarankan) ikuti petunjuk petunjuk GPU .
+
+Lihat delta repositori dan instal dengan pip:
+
+git clone http://github.com/nasa/delta
+python3 -m pip install delta
+
+Ini menginstal DELTA dan semua dependensi (kecuali untuk GDAL yang harus diinstal secara manual di langkah 1).
+
+Pemakaian
+
+Contoh sederhana, pertimbangkan untuk melatih jaringan saraf untuk memetakan air dalam pandangan Dunia. Anda akan:
+
+Kumpulkan data pelatihan. Temukan dan simpan gambar Worldview dengan dan tanpa air. Untuk pengklasifikasi yang kuat, data pelatihan harus representatif mungkin dari data evaluasi.
+
+Beri label data pelatihan. Buat gambar yang cocok dengan piksel gambar pelatihan untuk piksel, di mana setiap piksel pada label adalah 0 jika bukan air dan 1 jika bukan air.
+
+Latih jaringan saraf. Lari
+
+delta train --config wv_water.yaml wv_water.h5
+
+di mana wv_water.yamlada file yang menentukan data training berlabel dan parameter training apa pun (lebih lanjut tentang file yang diatur di bawah). Perintah tersebut akan mengeluarkan file jaringan saraf wv_water.h5yang dapat digunakan untuk klasifikasi. Jaringan neural pada tingkat potongan , memasukkan dan mengeluarkan blok gambar yang lebih kecil pada satu waktu.
+
+Klasifikasi dengan jaringan yang terlatih. Lari
+
+delta classify --image image.tiff wv_water.h5
+
+untuk mengklasifikasikan image.tiffmenggunakan jaringan yang wv_water.h5diketahui sebelumnya. File image_predicted.tiffakan ditulis ke direktori saat ini yang menampilkan label yang dihasilkan.
+
+File Konfigurasi
+
+DELTA dengan file YAML. Beberapa opsi dapat ditimpa dengan opsi baris perintah (gunakan delta --helpuntuk melihat yang mana). Pelajari lebih lanjut tentang file tata letak DELTA .
+
+Semua opsi konfigurasi yang tersedia dan nilai defaultnya di sini . Kami menyarankan agar pengguna membuat satu file tata letak yang dapat digunakan kembali untuk mendeskripsikan parameter khusus untuk setiap kumpulan data, dan salah satu file tersebut untuk melatih atau mengklasifikasikan kumpulan data tersebut.
+
+Format Gambar yang Didukung
+
+DELTA mendukung file tiff dan beberapa format lainnya, yang terlihat di sini . Pengguna dapat Perluas DELTA dengan format khusus mereka sendiri. Kami ingin Perluas DELTA untuk mendukung format file berguna lainnya.
+
+MLFlow
+
+DELTA terintegrasi dengan MLFlow untuk mengawasi pelatihan. Opsi MLFlow dapat ditentukan di area yang sesuai dari tata ruang file. Secara default, metrik pelatihan dan validasi, bersama dengan semua parameter konfigurasi. Jaringan neural terbaru disimpan ke file saat program pelatihan terputus atau selesai.
+
+Lihat semua informasi pelatihan yang melalui mlflow dengan menjalankan ::
+
+  delta mlflow_ui
+dan menavigasi ke URL yang dicetak di browser. Hal ini memudahkan untuk menjalankan saat menjalankan eksperimen dan menyesuaikan parameter.
+
+Menggunakan DELTA dari Kode
+
+Anda juga dapat memanggil DELTA sebagai pustaka python dan menyesuaikannya dengan atribut Anda sendiri, misalnya, jenis gambar khusus. Dokumentasi API python dapat dibuat sebagai HTML. Untuk melakukan:
+
+  pip install pdoc3
+  ./scripts/docs.sh
+
+Kemudian buka html/delta/index.html di web browser.
+
+
+Kontributor
+
+Kami menerima permintaan penarikan untuk berkontribusi di DELTA. Namun, karena batasan hukum NASA, kami harus mewajibkan semua kontributor yang menyerahkan dan menyerahkan Lisensi Kontributor Individual NASA . Anda dapat memindai dokumen dan mengirimkannya melalui email. Terima kasih atas pengertian Anda.
+
+Catatan penting untuk pengembang:
+
+Percabangan : Pengembangan aktif terjadi pada develop. Rilis setia ke master.
+
+Gaya Kode : Kode harus melewati linter kami sebelum digabungkan. Jalankan scripts/linter/install_linter.shuntuk menginstal linter sebagai pengait pra-commit git.
+
+Tes Unit : Kode harus lulus tes unit sebelum digabungkan. Jalankan pytestdi testsdirektori untuk menjalankan tes. Tambahkan unit tes baru yang sesuai.
+
+Pengaturan Pengembangan : Anda dapat menginstal delta menggunakan -eflag pip yang menginstal dalam mode edit. Kemudian Anda dapat menjalankan deltadan itu akan menggunakan perubahan terbaru yang Anda buat pada repo tanpa menginstal ulang.
+
+Perizinan
+
+DELTA dirilis di bawah lisensi Apache 2.
+
+Hak Cipta (c) 2020, Pemerintah Amerika
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ Serikat, yang diwakili oleh Administrator Badan Penerbangan dan Antariksa Nasional. Seluruh hak cipta.
